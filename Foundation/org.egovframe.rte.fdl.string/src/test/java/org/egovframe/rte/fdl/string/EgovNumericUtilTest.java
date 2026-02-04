@@ -1,9 +1,5 @@
 package org.egovframe.rte.fdl.string;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -127,7 +125,7 @@ public class EgovNumericUtilTest {
 			assertEquals(ArithmeticException.class, exceptionClass);
 		}
 
-		assertEquals("1.22", EgovNumericUtil.divide("15.23", "12.45", 5));
+		assertEquals("1.23", EgovNumericUtil.divide("15.23", "12.45", 2, EgovNumericUtil.ROUND_UP));
 
 		assertEquals("1.224", EgovNumericUtil.divide("15.23", "12.45", 3, EgovNumericUtil.ROUND_UP));
 

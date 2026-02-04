@@ -15,14 +15,12 @@
  */
 package org.egovframe.rte.psl.dataaccess;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.ibatis.sqlmap.client.SqlMapClient;
 import org.egovframe.rte.psl.orm.ibatis.support.SqlMapClientDaoSupport;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Spring 의 iBatis 연동 지원을 Annotation 형식으로 쉽게 처리하기 위한 공통 parent DAO 클래스
@@ -147,7 +145,6 @@ public abstract class EgovAbstractDAO extends SqlMapClientDaoSupport {
 	 * @param queryId - 삭제 처리 SQL mapping 쿼리 ID
 	 * @param parameterObject - 삭제 처리 SQL mapping 입력 데이터(일반적으로 key 조건)를 세팅한 파라메터 객체(보통 VO 또는 Map)
 	 * @param requiredRowsAffected - 삭제할 row 수
-	 * @return DBMS가 지원하는 경우 delete 적용 결과 count
 	 */
 	public void delete(String queryId, Object parameterObject, int requiredRowsAffected) {
 		getSqlMapClientTemplate().delete(queryId, parameterObject, requiredRowsAffected);

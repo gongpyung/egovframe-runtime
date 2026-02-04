@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.egovframe.rte</groupId>
     <artifactId>org.egovframe.rte.fdl.security</artifactId>
+    <version>4.3.0</version>
     <packaging>jar</packaging>
-    <version>4.0.0</version>
     <name>org.egovframe.rte.fdl.security</name>
     <description>The eGovernment Standard Framework</description>
     <url>https://www.egovframe.go.kr</url>
@@ -18,9 +18,10 @@
     </licenses>
 
     <properties>
-        <spring.maven.artifact.version>5.3.6</spring.maven.artifact.version>
-        <spring.security.maven.artifact.version>5.4.6</spring.security.maven.artifact.version>
-        <org.egovframe.rte.version>4.0.0</org.egovframe.rte.version>
+        <org.egovframe.rte.version>4.3.0</org.egovframe.rte.version>
+        <spring.maven.artifact.version>5.3.37</spring.maven.artifact.version>
+        <spring.security.maven.artifact.version>5.8.13</spring.security.maven.artifact.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -119,12 +120,12 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.9.5</version>
+            <version>1.9.22</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -134,6 +135,12 @@
         </dependency>
 
         <!-- for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -147,15 +154,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>4.1</version>
+            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -173,7 +174,8 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.5.0</version>
+            <version>2.7.3</version>
+            <classifier>jdk8</classifier>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -187,44 +189,30 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.13.0</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <encoding>UTF-8</encoding>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>hibernate3-maven-plugin</artifactId>
                     <version>3.0</version>
-                    <configuration>
-                        <components>
-                            <component>
-                                <name>hbm2ddl</name>
-                                <implementation>annotationconfiguration</implementation>
-                            </component>
-                        </components>
-                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.hsqldb</groupId>
                             <artifactId>hsqldb</artifactId>
-                            <version>2.5.0</version>
+                            <version>2.7.2</version>
+                            <classifier>jdk8</classifier>
                         </dependency>
                     </dependencies>
-                </plugin>
-                <!-- EMMA -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>emma-maven-plugin</artifactId>
-                    <version>1.0-alpha-3</version>
                 </plugin>
                 <!-- PMD manven plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.12.0</version>
+                    <version>3.23.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -232,7 +220,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -242,14 +230,41 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- JavaDoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <doclint>none</doclint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- EMMA -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.3.0</version>
                 <configuration>
                     <skipTests>true</skipTests>
-                    <forkMode>once</forkMode>
                     <reportFormat>xml</reportFormat>
                     <excludes>
                         <exclude>**/Abstract*.java</exclude>
@@ -266,16 +281,6 @@
                 <version>1.0-alpha-3</version>
                 <inherited>true</inherited>
             </plugin>
-            <!-- JavaDoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <additionalJOption>-Xdoclint:none</additionalJOption>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -285,7 +290,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.4.4</version>
                 <reportSets>
                     <reportSet>
                         <id>sunlink</id>
@@ -295,7 +300,7 @@
                         <inherited>true</inherited>
                         <configuration>
                             <links>
-                                <link>https://docs.oracle.com/javase/6/docs/api/</link>
+                                <link>https://docs.oracle.com/javase/8/docs/api/</link>
                             </links>
                         </configuration>
                     </reportSet>
@@ -305,11 +310,13 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>emma-maven-plugin</artifactId>
+                <version>1.0-alpha-3</version>
                 <inherited>true</inherited>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.3.0</version>
                 <inherited>true</inherited>
                 <reportSets>
                     <reportSet>
@@ -323,24 +330,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <minmemory>128m</minmemory>
                     <maxmemory>512m</maxmemory>
-                    <encoding>UTF-8</encoding>
-                    <docencoding>UTF-8</docencoding>
-                    <charset>UTF-8</charset>
-                    <additionalJOption>-Xdoclint:none</additionalJOption>
                 </configuration>
             </plugin>
             <!-- Generating Java Source in HTML -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
-                    <inputEncoding>UTF-8</inputEncoding>
-                    <outputEncoding>UTF-8</outputEncoding>
                     <linkJavadoc>true</linkJavadoc>
-                    <javadocDir>apidocs</javadocDir>
+                    <javadocDir>api docs</javadocDir>
                 </configuration>
             </plugin>
         </plugins>

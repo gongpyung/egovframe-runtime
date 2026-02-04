@@ -15,37 +15,28 @@
  */
 package org.egovframe.rte.fdl.cryptography.impl;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigDecimal;
+import org.apache.commons.codec.binary.Base64;
 import org.egovframe.rte.fdl.cryptography.EgovGeneralCryptoService;
 import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 import org.egovframe.rte.fdl.logging.util.EgovResourceReleaser;
-import org.apache.commons.codec.binary.Base64;
 import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.ReflectionUtils;
+
+import java.io.*;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 
 public class EgovGeneralCryptoServiceImpl implements EgovGeneralCryptoService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovGeneralCryptoServiceImpl.class); // Logger 처리
-	private final Base64 base64 = new Base64();
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovGeneralCryptoServiceImpl.class);
 
-	private static final int DEFAULT_BLOCKSIZE = 1024;
-	private String algorithm = "PBEWithSHA1AndDESede"; // default
+	private final Base64 base64 = new Base64();
+	private String algorithm = "PBEWithSHA1AndDESede";
 	private EgovPasswordEncoder passwordEncoder;
-	private int blockSize = DEFAULT_BLOCKSIZE;
+	private int blockSize = 1024;
 
 	public String getAlgorithm() {
 		return algorithm;
@@ -56,7 +47,6 @@ public class EgovGeneralCryptoServiceImpl implements EgovGeneralCryptoService {
 		LOGGER.debug("General Crypto Service's algorithm : {}", algorithm);
 	}
 
-	@Required
 	public void setPasswordEncoder(EgovPasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
 		LOGGER.debug("passwordEncoder's algorithm : {}", passwordEncoder.getAlgorithm());
@@ -118,7 +108,7 @@ public class EgovGeneralCryptoServiceImpl implements EgovGeneralCryptoService {
 					} else {
 						encrypted = cipher.encrypt(buffer);
 					}
-					String line = new String(base64.encode(encrypted), "US-ASCII");
+					String line = new String(base64.encode(encrypted), StandardCharsets.US_ASCII);
 					bw.write(line);
 					bw.newLine();
 					size += length;
@@ -178,7 +168,7 @@ public class EgovGeneralCryptoServiceImpl implements EgovGeneralCryptoService {
 				byte[] decrypted = null;
 				String line = null;
 				while ((line = br.readLine()) != null) {
-					encrypted = base64.decode(line.getBytes("US-ASCII"));
+					encrypted = base64.decode(line.getBytes(StandardCharsets.US_ASCII));
 					decrypted = cipher.decrypt(encrypted);
 					bos.write(decrypted);
 				}

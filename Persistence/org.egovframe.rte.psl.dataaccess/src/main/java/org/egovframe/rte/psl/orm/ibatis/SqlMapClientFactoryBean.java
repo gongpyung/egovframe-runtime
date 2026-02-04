@@ -16,12 +16,6 @@
 
 package org.egovframe.rte.psl.orm.ibatis;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.util.Properties;
-import javax.sql.DataSource;
-
 import com.ibatis.common.xml.NodeletException;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapClientBuilder;
@@ -32,7 +26,6 @@ import com.ibatis.sqlmap.engine.impl.ExtendedSqlMapClient;
 import com.ibatis.sqlmap.engine.transaction.TransactionConfig;
 import com.ibatis.sqlmap.engine.transaction.TransactionManager;
 import com.ibatis.sqlmap.engine.transaction.external.ExternalTransactionConfig;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.NestedIOException;
@@ -40,6 +33,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.support.lob.LobHandler;
 import org.springframework.util.ObjectUtils;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.Properties;
 
 /**
  * {@link org.springframework.beans.factory.FactoryBean} that creates an
@@ -67,7 +66,6 @@ import org.springframework.util.ObjectUtils;
  * @see SqlMapClientTemplate#setSqlMapClient
  * @see SqlMapClientTemplate#setDataSource
  * @deprecated as of Spring 3.2, in favor of the native Spring support
- * in the Mybatis follow-up project (http://code.google.com/p/mybatis/)
  */
 @Deprecated
 public class SqlMapClientFactoryBean implements FactoryBean<SqlMapClient>, InitializingBean {

@@ -16,17 +16,10 @@
 
 package org.egovframe.rte.psl.orm.ibatis;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import javax.sql.DataSource;
-
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapExecutor;
 import com.ibatis.sqlmap.client.SqlMapSession;
 import com.ibatis.sqlmap.client.event.RowHandler;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.JdbcUpdateAffectedIncorrectNumberOfRowsException;
@@ -34,6 +27,12 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.support.JdbcAccessor;
 import org.springframework.util.Assert;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class that simplifies data access via the iBATIS
@@ -81,7 +80,6 @@ import org.springframework.util.Assert;
  * @see com.ibatis.sqlmap.client.SqlMapClient#getDataSource
  * @see com.ibatis.sqlmap.client.SqlMapExecutor
  * @deprecated as of Spring 3.2, in favor of the native Spring support
- * in the Mybatis follow-up project (http://code.google.com/p/mybatis/)
  */
 @Deprecated
 public class SqlMapClientTemplate extends JdbcAccessor implements SqlMapClientOperations {

@@ -1,17 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:p="http://www.springframework.org/schema/p"  
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
-    
-    
-<!-- 	<bean id="egovPropertyConfigurer" class="org.egovframe.rte.fdl.cmmn.config.EgovPropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:/META-INF/spring/config/globals.properties</value>
-            </list>
-        </property>
-    </bean> -->
-    
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
 	<bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="useCodeAsDefaultMessage">
 			<value>true</value>
@@ -41,10 +31,8 @@
 	
 	<bean id="egov.ariaCryptoService" class="org.egovframe.rte.fdl.cryptography.impl.EgovARIACryptoServiceImpl">
 		<property name="passwordEncoder" ref="egov.passwordEncoder"/>
-		<property name="blockSize" value="#{new Integer(egovPropertyConfigurer.getString('Globals.db.CryptoBlockSize'))}"/>
+		<property name="blockSize" value="#{Integer.valueOf(egovPropertyConfigurer.getString('Globals.db.CryptoBlockSize'))}"/>
 	</bean>
-	
-
 
 	<bean id="egov.envCryptoService" class="org.egovframe.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl"  init-method="init">
 		<property name="passwordEncoder" ref="egov.passwordEncoder"/>
@@ -55,7 +43,7 @@
 		<property name="cryptoAlgorithm" value="#{egovPropertyConfigurer.getString('Globals.db.CryptoAlgorithm')}"/>
 		<property name="cyptoAlgorithmKey" value="#{egovPropertyConfigurer.getString('Globals.db.CryptoAlgorithmKey')}"/>
 		<property name="cyptoAlgorithmKeyHash" value="#{egovPropertyConfigurer.getString('Globals.db.CryptoAlgorithmKeyHash')}"/>
-		<property name="cryptoBlockSize" value="#{new Integer(egovPropertyConfigurer.getString('Globals.db.CryptoBlockSize'))}"/>
+		<property name="cryptoBlockSize" value="#{Integer.valueOf(egovPropertyConfigurer.getString('Globals.db.CryptoBlockSize'))}"/>
 	</bean>
 
 </beans> 

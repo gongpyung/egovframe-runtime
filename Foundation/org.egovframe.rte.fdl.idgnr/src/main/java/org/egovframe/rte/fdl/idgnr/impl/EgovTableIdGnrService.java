@@ -15,13 +15,7 @@
  */
 package org.egovframe.rte.fdl.idgnr.impl;
 
-import java.math.BigDecimal;
-import java.util.Locale;
-
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -31,6 +25,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.util.Locale;
 
 /**
  * ID Generation 서비스를 위한 Table 구현 클래스
@@ -126,7 +124,7 @@ public class EgovTableIdGnrService extends AbstractDataBlockIdGnrService {
     	if (useBigDecimals) {
     		initId = new BigDecimal(blockSize);
     	} else {
-    		initId = new Long(blockSize);
+    		initId = Long.valueOf(blockSize);
     	}
     	jdbcTemplate.update(insertQuery, initId);
     	return initId;
@@ -140,7 +138,7 @@ public class EgovTableIdGnrService extends AbstractDataBlockIdGnrService {
      * @throws FdlException ID생성을 위한 블럭 할당이 불가능할때
      */
 	private Object allocateIdBlock(final int blockSize, final boolean useBigDecimals) throws FdlException {
-		LOGGER.debug(messageSource.getMessage("debug.idgnr.allocate.idblock", new Object[] { new Integer(blockSize), tableName }, Locale.getDefault()));
+		LOGGER.debug(messageSource.getMessage("debug.idgnr.allocate.idblock", new Object[] { Integer.valueOf(blockSize), tableName }, Locale.getDefault()));
 
 		try {
 			return transactionTemplate.execute(new TransactionCallback<Object>() {
@@ -172,7 +170,7 @@ public class EgovTableIdGnrService extends AbstractDataBlockIdGnrService {
 
 							if ((Long) nextId == -1L) { // no row
 								insertInitId(useBigDecimals, blockSize);
-								return new Long(0);
+								return Long.valueOf(0);
 							}
 						}
 					} catch (DataAccessException dae) {
@@ -188,7 +186,7 @@ public class EgovTableIdGnrService extends AbstractDataBlockIdGnrService {
 						if (useBigDecimals) {
 							newNextId = ((BigDecimal) nextId).add(new BigDecimal(blockSize));
 						} else {
-							newNextId = new Long(((Long) nextId).longValue() + blockSize);
+							newNextId = Long.valueOf(((Long) nextId).longValue() + blockSize);
 						}
 
 						jdbcTemplate.update(updateQuery, newNextId, tableName);

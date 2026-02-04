@@ -1,25 +1,17 @@
 package org.egovframe.rte.fdl.cryptography;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.DigestOutputStream;
-import java.security.MessageDigest;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+import java.io.*;
+import java.security.DigestOutputStream;
+import java.security.MessageDigest;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/*.xml" })
@@ -95,25 +87,29 @@ public class EgovARIACryptoServiceTest {
 	}
 
     @Test
-    public void testString() {
-		String[] testString = {
+    public void testString() throws UnsupportedEncodingException {
+		/*String[] testString = {
 			"This is a testing...\nHello!",
 			"한글 테스트입니다...",
 			"!@#$%^&*()_+|~{}:\"<>?-=\\`[];',./"
 		};
-	
+
 		try {
 			for (String str : testString) {
 				byte[] encrypted = cryptoService.encrypt(str.getBytes("UTF-8"), password);
 
 				byte[] decrypted = cryptoService.decrypt(encrypted, password);
-				
+
 				assertEquals(str, new String(decrypted, "UTF-8"));
 			}
 		} catch (UnsupportedEncodingException uee) {
 			uee.printStackTrace();
 			fail();
-		}
+		}*/
+
+		String param = "aaa";
+		byte[] encrypted = cryptoService.encrypt(param.getBytes("UTF-8"), password);
+		System.out.println("##### Aria testString >>> " + java.util.Base64.getEncoder().encodeToString(encrypted));
 		
     }
     

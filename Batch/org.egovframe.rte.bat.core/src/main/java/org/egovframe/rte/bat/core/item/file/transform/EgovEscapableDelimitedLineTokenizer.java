@@ -15,11 +15,12 @@
  */
 package org.egovframe.rte.bat.core.item.file.transform;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * EgovDelimitedLengthTokenizer 클래스
@@ -32,7 +33,8 @@ import org.springframework.util.Assert;
  *
  * 수정일		수정자				수정내용
  * ----------------------------------------------
- * 2017.10.23	신용호				최초 생성
+ * 2017.10.23	신용호			최초 생성
+ * 2023.08.31	ESFC			불필요한 replaceAll을 replace 로 수정(getRegexDelimiter(), Contribution 반영)
  * </pre>
 */
 public class EgovEscapableDelimitedLineTokenizer extends EgovAbstractLineTokenizer {
@@ -184,13 +186,13 @@ public class EgovEscapableDelimitedLineTokenizer extends EgovAbstractLineTokeniz
 	}
 	
 	private String getRegexDelimiter(String delimiter) {
-		delimiter = delimiter.replaceAll("\\(", "\\\\(");
-		delimiter = delimiter.replaceAll("\\)", "\\\\)");
-		delimiter = delimiter.replaceAll("\\{", "\\\\{");
-		delimiter = delimiter.replaceAll("\\}", "\\\\}");
-		delimiter = delimiter.replaceAll("\\^", "\\\\^");
-		delimiter = delimiter.replaceAll("\\[", "\\\\[");
-		delimiter = delimiter.replaceAll("\\]", "\\\\]");
+		delimiter = delimiter.replace("\\(", "\\\\(");
+		delimiter = delimiter.replace("\\)", "\\\\)");
+		delimiter = delimiter.replace("\\{", "\\\\{");
+		delimiter = delimiter.replace("\\}", "\\\\}");
+		delimiter = delimiter.replace("\\^", "\\\\^");
+		delimiter = delimiter.replace("\\[", "\\\\[");
+		delimiter = delimiter.replace("\\]", "\\\\]");
 
 		delimiter = delimiter.replaceAll("[*]", "[*]");
 		delimiter = delimiter.replaceAll("[+]", "[+]");

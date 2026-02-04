@@ -1,12 +1,5 @@
 package org.egovframe.rte.fdl.string;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * @author sjyoon
@@ -55,6 +51,19 @@ public class EgovObjectUtilTest {
 		assertTrue(EgovObjectUtil.isNull(null));
 	}
 
+	/**
+	 * [Flow #-2 Positive Case : check which Obejct is empty
+	 * @throws Exception
+	 */
+	@Test
+	public void testIsEmpty() throws Exception{
+		ArrayList<String> list = new ArrayList<>();
+		list.add("12124");
+
+		assertFalse(EgovObjectUtil.isEmpty(new Object()));
+		assertTrue(EgovObjectUtil.isEmpty(null));
+		assertFalse(EgovObjectUtil.isEmpty(list));
+	}
 
 	/**
 	 * @throws Exception
@@ -116,7 +125,7 @@ public class EgovObjectUtilTest {
 			LOGGER.error("### Exception : {}", e.toString());
 			exceptionClass = (Class<Exception>) e.getClass();
 		} finally {
-			assertEquals(ClassNotFoundException.class, exceptionClass);
+			assertEquals(RuntimeException.class, exceptionClass);
 			assertNotSame(InstantiationException.class, exceptionClass);
 			assertNotSame(IllegalAccessException.class, exceptionClass);
 		}

@@ -15,37 +15,34 @@
  */
 package org.egovframe.rte.fdl.access.service;
 
+import org.egovframe.rte.fdl.access.bean.AuthorityResourceMetadata;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.egovframe.rte.fdl.access.bean.AuthorityResourceMetadata;
 
 /**
  * 사용자 계정 정보를 처리하는 유틸 클래스
  *
  * <p>Desc.: 사용자 계정 정보를 처리하는 유틸 클래스</p>
  *
- * @author Egovframework Center
+ * @author ESFC
  * @since 2019.10.01
  * @version 3.9
  * <pre>
  * 개정이력(Modification Information)
  *
- * 수정일		수정자				    수정내용
+ * 수정일		수정자				수정내용
  * ----------------------------------------------
- * 2019.10.01	Egovframework Center	최초 생성
+ * 2019.10.01	ESFC			최초 생성
+ * 2024.03.29   ESFC            권한별 접근 제한 메소드 생성
  * </pre>
  */
 public class EgovUserDetailsHelper {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovUserDetailsHelper.class);
 
 	public static Object getAuthenticatedUser() {
 		if (RequestContextHolder.getRequestAttributes() == null) {
@@ -55,19 +52,19 @@ public class EgovUserDetailsHelper {
 	}
 
 	public static List<String> getAuthorities() {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		if (RequestContextHolder.getRequestAttributes() == null) {
 			return null;
 		} else {
 			String accessUser = (String) RequestContextHolder.getRequestAttributes().getAttribute("accessUser", RequestAttributes.SCOPE_SESSION);
-			List<Map<String, Object>> listmap = AuthorityResourceMetadata.getAuthorityList();
-			if (!StringUtils.isEmpty(accessUser) && !ObjectUtils.isEmpty(listmap)) {
-				Iterator<Map<String, Object>> iterator = listmap.iterator();
-				Map<String, Object> tempMap;
+			List<Map<String, Object>> authList = AuthorityResourceMetadata.getAuthorityList();
+			if (!ObjectUtils.isEmpty(accessUser) && !ObjectUtils.isEmpty(authList)) {
+				Iterator<Map<String, Object>> iterator = authList.iterator();
+				Map<String, Object> authMap;
 				while (iterator.hasNext()) {
-					tempMap = iterator.next();
-					if (accessUser.equals(tempMap.get("userid"))) {
-						list.add((String) tempMap.get("authority"));
+					authMap = iterator.next();
+					if (accessUser.equals(authMap.get("userid"))) {
+						list.add((String) authMap.get("authority"));
 					}
 				}
 			}
@@ -79,10 +76,20 @@ public class EgovUserDetailsHelper {
 		if (RequestContextHolder.getRequestAttributes() == null) {
 			return false;
 		} else {
-			if (RequestContextHolder.getRequestAttributes().getAttribute("loginVO", RequestAttributes.SCOPE_SESSION) == null) {
-				return false;
+			return RequestContextHolder.getRequestAttributes().getAttribute("loginVO", RequestAttributes.SCOPE_SESSION) != null;
+		}
+	}
+
+	public static List<Map<String, Object>> getRoles() {
+		if (RequestContextHolder.getRequestAttributes() == null) {
+			return null;
+		} else {
+			String accessUser = (String) RequestContextHolder.getRequestAttributes().getAttribute("accessUser", RequestAttributes.SCOPE_SESSION);
+			List<Map<String, Object>> resourceMap = AuthorityResourceMetadata.getResourceMap();
+			if (!ObjectUtils.isEmpty(accessUser) && !ObjectUtils.isEmpty(resourceMap)) {
+				return resourceMap;
 			} else {
-				return true;
+				return null;
 			}
 		}
 	}

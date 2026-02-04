@@ -1,11 +1,10 @@
 package org.egovframe.rte.psl.dataaccess.mapper;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+import org.apache.ibatis.session.ResultHandler;
 import org.egovframe.rte.psl.dataaccess.vo.EmpVO;
 
-import org.apache.ibatis.session.ResultHandler;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *  == 개정이력(Modification Information) ==
@@ -15,7 +14,7 @@ import org.apache.ibatis.session.ResultHandler;
  *   2014.01.22 권윤정  FileUsingResultHandler테스트를 위한 selectEmpListToOutFileUsingResultHandler() 메서드 추가
  *
  */
-@Mapper("employerMapper")
+@EgovMapper("employerMapper")
 public interface EmployerMapper {
 
 	public List<EmpVO> selectEmployerList(EmpVO vo);

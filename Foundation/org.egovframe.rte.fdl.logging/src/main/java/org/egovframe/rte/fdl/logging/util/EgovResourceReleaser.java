@@ -19,11 +19,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Wrapper;
+import java.sql.*;
 
 /**
  * Utility class  to support to close resources
@@ -36,8 +32,8 @@ import java.sql.Wrapper;
  *
  * 수정일		수정자				수정내용
  * ----------------------------------------------
- * 2015.02.05	ESFC				최초 생성
- * 2020.08.31	ESFC				ES-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ * 2015.02.05	ESFC			최초 생성
+ * 2020.08.31	ESFC			ES-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  * </pre>
  */
 public final class EgovResourceReleaser {

@@ -1,13 +1,5 @@
 package org.egovframe.rte.fdl.string;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 /**
  * @author sjyoon
@@ -31,18 +28,18 @@ public class EgovDateUtilTest {
 	@Before
     public void onSetUp() throws Exception {
 
-		LOGGER.debug("###### EgovNumericUtilTest.onSetUp START ######");
+		LOGGER.debug("###### EgovDateUtilTest.onSetUp START ######");
 
-		LOGGER.debug("###### EgovNumericUtilTest.onSetUp END ######");
+		LOGGER.debug("###### EgovDateUtilTest.onSetUp END ######");
 
     }
 
     @After
     public void onTearDown() throws Exception {
 
-    	LOGGER.debug("###### EgovNumericUtilTest.onTearDown START ######");
+    	LOGGER.debug("###### EgovDateUtilTest.onTearDown START ######");
 
-    	LOGGER.debug("###### EgovNumericUtilTest.onTearDown END ######");
+    	LOGGER.debug("###### EgovDateUtilTest.onTearDown END ######");
     }
 
 	/**

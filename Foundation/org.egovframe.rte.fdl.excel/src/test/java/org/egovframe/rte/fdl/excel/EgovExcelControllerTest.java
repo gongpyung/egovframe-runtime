@@ -1,11 +1,5 @@
 package org.egovframe.rte.fdl.excel;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +17,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+
 /**
  * FileServiceTest is TestCase of File Handling Service
  * @author Seongjong Yoon
@@ -39,13 +38,8 @@ public class EgovExcelControllerTest extends AbstractJUnit4SpringContextTests {
     DispatcherServlet dispatcher;
 
 	@Before
-    public void init() {
+    public void init() throws ServletException {
         this.dispatcher = new DispatcherServlet() {
-            /**
-			 *  serialVersion UID
-			 */
-			private static final long serialVersionUID = -5110653077549638820L;
-
 			protected WebApplicationContext createWebApplicationContext(WebApplicationContext parent) {
                 GenericWebApplicationContext wac = new GenericWebApplicationContext();
                 wac.setParent(applicationContext);
@@ -53,11 +47,8 @@ public class EgovExcelControllerTest extends AbstractJUnit4SpringContextTests {
                 return wac;
             }
         };
-        try {
-            this.dispatcher.init(new MockServletConfig());
-        } catch (ServletException e) {
-            e.printStackTrace();
-        }
+
+		this.dispatcher.init(new MockServletConfig());
 
         LOGGER.debug("######  EgovExcelServiceControllerTest  ######");
     }

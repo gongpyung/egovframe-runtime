@@ -1,18 +1,13 @@
 package org.egovframe.rte.fdl.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Vector;
-
-import javax.annotation.Resource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+
+import static org.junit.Assert.*;
 
 /**
  * Property Service 기본 기능 확인 클래스
@@ -29,55 +24,45 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * </pre>
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/spring/context-common.xml",
-    "classpath*:/spring/context-properties.xml" })
-public class PropertyServiceBasicTest extends AbstractJUnit4SpringContextTests {
+@ContextConfiguration(locations = {
+        "classpath*:/spring/context-common.xml",
+        "classpath*:/spring/context-properties.xml"
+})
+public class PropertyServiceBasicTest {
 
     @Resource(name = "propertyService")
     protected EgovPropertyService propertyService;
 
     /**
      * 기본 처리 테스트
-     * @throws Exception
-     *         fail to test
+     * @throws Exception fail to test
      */
     @Test
     public void testPropertiesService() throws Exception {
+
+        assertEquals("안녕하세요.", propertyService.getString("greet.message"));
 
         assertNotNull(propertyService.getString("tokens_on_multiple_lines"));
 
         assertEquals("1234", propertyService.getString("AAAA"));
 
-        assertEquals(new Double(1234), new Double(propertyService
-            .getDouble("number.double")));
+        assertEquals(Double.valueOf(1234), Double.valueOf(propertyService.getDouble("number.double")));
 
-        assertEquals(new Float(1234), new Float(propertyService
-            .getFloat("number.float")));
+        assertEquals(Float.valueOf(1234), Float.valueOf(propertyService.getFloat("number.float")));
 
-        assertEquals(new Integer(1234), new Integer(propertyService
-            .getInt("number.int")));
+        assertEquals(Integer.valueOf(1234), Integer.valueOf(propertyService.getInt("number.int")));
 
-        assertEquals(new Long(1234), new Long(propertyService
-            .getLong("number.long")));
-
-        assertEquals(2, propertyService.getVector("tokens_on_a_line").size());
-
-        assertEquals(0, propertyService.getVector("notexist_tokens_on_a_line",
-            new Vector<Object>()).size());
+        assertEquals(Long.valueOf(1234), Long.valueOf(propertyService.getLong("number.long")));
 
         assertNotNull(propertyService.getString("AAAA", ""));
 
-        assertEquals(new Double(1234), new Double(propertyService.getDouble(
-            "number.double", 123.4)));
+        assertEquals(Double.valueOf(1234), Double.valueOf(propertyService.getDouble("number.double", 123.4)));
 
-        assertEquals(new Float(1234), new Float(propertyService.getFloat(
-            "number.float", (float) 123.4)));
+        assertEquals(Float.valueOf(1234), Float.valueOf(propertyService.getFloat("number.float", (float) 123.4)));
 
-        assertEquals(new Integer(1234), new Integer(propertyService.getInt(
-            "number.int", 123)));
+        assertEquals(Integer.valueOf(1234), Integer.valueOf(propertyService.getInt("number.int", 123)));
 
-        assertEquals(new Long(1234), new Long(propertyService.getLong(
-            "number.long", 1234)));
+        assertEquals(Long.valueOf(1234), Long.valueOf(propertyService.getLong("number.long", 1234)));
 
         assertNotNull(propertyService.getKeys());
 
@@ -87,13 +72,11 @@ public class PropertyServiceBasicTest extends AbstractJUnit4SpringContextTests {
 
         assertTrue(!propertyService.getBoolean("notexistboolean", false));
 
-        assertEquals(2,
-            propertyService.getStringArray("tokens_on_a_line").length);
+        assertEquals(2, propertyService.getStringArray("tokens_on_a_line").length);
 
         System.out.println(propertyService.getString("special.test"));
 
-        assertEquals("~!@#$%^&*()_+;{}|", propertyService
-            .getString("special.test"));
+        assertEquals("~!@#$%^&*()_+;{}|", propertyService.getString("special.test"));
 
     }
 

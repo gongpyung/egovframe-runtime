@@ -1,22 +1,7 @@
 package org.egovframe.rte.fdl.idgnr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Properties;
-
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl;
-
-import javax.annotation.Resource;
-import javax.sql.DataSource;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +10,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
+
+import static org.junit.Assert.*;
 
 /**
  * TableId Generation Service Test 클래스
@@ -386,7 +381,7 @@ public class EgovTableIdGnrServiceTest {
 		for (int i = 1; i <= testCount; i++) {
 			String id = idsTestSimpleRequestIdsSize10.getNextStringId();
 			System.out.println("##### testGetStringIdFromLongId id >>> " + id);
-			assertEquals("The returned id was not what was expected.", new Integer(i).toString(), id);
+			assertEquals("The returned id was not what was expected.", Integer.valueOf(i).toString(), id);
 		}
 
 		assertEquals("The next_id column in the database did not have the expected value.", testCount + 1, peekNextLongId("test"));

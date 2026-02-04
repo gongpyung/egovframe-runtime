@@ -15,32 +15,14 @@
  */
 package org.egovframe.rte.bat.core.launch.support;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersIncrementer;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.converter.DefaultJobParametersConverter;
 import org.springframework.batch.core.converter.JobParametersConverter;
 import org.springframework.batch.core.explore.JobExplorer;
-import org.springframework.batch.core.launch.JobExecutionNotFailedException;
-import org.springframework.batch.core.launch.JobExecutionNotRunningException;
-import org.springframework.batch.core.launch.JobExecutionNotStoppedException;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.JobParametersNotFoundException;
+import org.springframework.batch.core.launch.*;
 import org.springframework.batch.core.launch.support.ExitCodeMapper;
 import org.springframework.batch.core.launch.support.JvmSystemExiter;
 import org.springframework.batch.core.launch.support.SimpleJvmExitCodeMapper;
@@ -51,6 +33,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * EgovBatchRunner 클래스
@@ -63,7 +47,8 @@ import org.springframework.util.StringUtils;
  * 수정일		수정자				수정내용
  * ----------------------------------------------
  * 2012.07.25	배치실행개발팀		최초 생성
- * 2017.02.15	장동한				시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ * 2017.02.15	장동한			시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ * 2023.08.31	ESFC			NullPointerException를 분리(start(), Contribution 반영)
  * </pre>
 */
 public class EgovCommandLineRunner {
@@ -274,10 +259,15 @@ public class EgovCommandLineRunner {
 			LOGGER.warn("jobExecutionTime=" + (jobExecution.getEndTime().getTime() - jobExecution.getStartTime().getTime()) / 1000f + "s");
 
 			return exitCodeMapper.intValue(jobExecution.getExitStatus().getExitCode());
+		} catch (NullPointerException e) {
+			String message = "Job Terminated in error: " + e.getMessage();
+			LOGGER.error("["+e.getClass()+"] Try/Catch...NullPointerException : " + e.getMessage());
+			EgovCommandLineRunner.message = message;
+			return exitCodeMapper.intValue(ExitStatus.FAILED.getExitCode());
 		} catch (Throwable e) {
 			String message = "Job Terminated in error: " + e.getMessage();
 			//2017.02.15 장동한 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("["+e.getClass()+"] Try/Catch...job tart Runing : " + e.getMessage());
+			LOGGER.error("["+e.getClass()+"] Try/Catch...job start Runing : " + e.getMessage());
 			EgovCommandLineRunner.message = message;
 			return exitCodeMapper.intValue(ExitStatus.FAILED.getExitCode());
 		} finally {

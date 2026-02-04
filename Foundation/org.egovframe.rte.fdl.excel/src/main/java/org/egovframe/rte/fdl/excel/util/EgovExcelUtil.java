@@ -15,10 +15,10 @@
  */
 package org.egovframe.rte.fdl.excel.util;
 
-import org.egovframe.rte.fdl.string.EgovDateUtil;
-
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,54 +44,55 @@ import org.slf4j.LoggerFactory;
  */
 public final class EgovExcelUtil {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovExcelUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EgovExcelUtil.class);
 
-	private EgovExcelUtil() {
-	}
+    private EgovExcelUtil() {
+    }
 
     /**
-     * 엑셀의 셀값을 String 타입으로 변환하여 리턴한다.
-     * @param cell <code>Cell</code>
-     * @return 결과 값
-     */
+    * 엑셀의 셀값을 String 타입으로 변환하여 리턴한다.
+    * @param cell <code>Cell</code>
+    * @return 결과 값
+    */
     public static String getValue(Cell cell) {
         String result = "";
         if (null == cell) {
             return "";
         }
 
-        if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
-            LOGGER.debug("### Cell.CELL_TYPE_BOOLEAN : {}", Cell.CELL_TYPE_BOOLEAN);
-            result = String.valueOf(cell.getBooleanCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_ERROR) {
-            LOGGER.debug("### Cell.CELL_TYPE_ERROR : {}", Cell.CELL_TYPE_ERROR);
-        } else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
-            LOGGER.debug("### Cell.CELL_TYPE_FORMULA : {}", Cell.CELL_TYPE_FORMULA);
-			String stringValue = null;
-			String longValue = null;
-			try {
-				stringValue = cell.getRichStringCellValue().getString();
-				longValue = doubleToString(cell.getNumericCellValue());
-			//2017.02.15 장동한 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]	
+        if (cell.getCellType() == CellType.BOOLEAN) {
+            LOGGER.debug("### Cell.CELL_TYPE_BOOLEAN : {}", CellType.BOOLEAN);
+        result = String.valueOf(cell.getBooleanCellValue());
+        } else if (cell.getCellType() == CellType.ERROR) {
+            LOGGER.debug("### Cell.CELL_TYPE_ERROR : {}", CellType.ERROR);
+        } else if (cell.getCellType() == CellType.FORMULA) {
+            LOGGER.debug("### Cell.CELL_TYPE_FORMULA : {}", CellType.FORMULA);
+            String stringValue = null;
+            String longValue = null;
+            try {
+                stringValue = cell.getRichStringCellValue().getString();
+                longValue = doubleToString(cell.getNumericCellValue());
+                //2017.02.15 장동한 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
             } catch(IllegalArgumentException e) {
                 LOGGER.error("[IllegalArgumentException] Try/Catch... Runing : "+ e.getMessage());
             }
-
             if (stringValue != null) {
-				result = stringValue;
-			} else if (longValue != null) {
-				result = longValue;
-			} else {
-				result = cell.getCellFormula();
-			}
-        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-            LOGGER.debug("### Cell.CELL_TYPE_NUMERIC : {}", Cell.CELL_TYPE_NUMERIC);
-            result = DateUtil.isCellDateFormatted(cell) ? EgovDateUtil.toString(cell.getDateCellValue(), "yyyy/MM/dd", null) : doubleToString(cell.getNumericCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
-            LOGGER.debug("### Cell.CELL_TYPE_STRING : {}", Cell.CELL_TYPE_STRING);
+                result = stringValue;
+            } else if (longValue != null) {
+                result = longValue;
+            } else {
+                result = cell.getCellFormula();
+            }
+        } else if (cell.getCellType() == CellType.NUMERIC) {
+        LOGGER.debug("### Cell.CELL_TYPE_NUMERIC : {}", CellType.NUMERIC);
+            result = DateUtil.isCellDateFormatted(cell)
+                    ? EgovDateUtil.toString(cell.getDateCellValue(), "yyyy/MM/dd", null)
+                    : doubleToString(cell.getNumericCellValue());
+        } else if (cell.getCellType() == CellType.STRING) {
+            LOGGER.debug("### Cell.CELL_TYPE_STRING : {}", CellType.STRING);
             result = cell.getRichStringCellValue().getString();
-        } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
-            LOGGER.debug("### Cell.CELL_TYPE_BLANK : {}", Cell.CELL_TYPE_BLANK);
+        } else if (cell.getCellType() == CellType.BLANK) {
+            LOGGER.debug("### Cell.CELL_TYPE_BLANK : {}", CellType.BLANK);
         }
         return result;
     }

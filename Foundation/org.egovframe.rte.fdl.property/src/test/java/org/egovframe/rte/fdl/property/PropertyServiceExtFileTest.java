@@ -1,14 +1,14 @@
 package org.egovframe.rte.fdl.property;
 
-import static org.junit.Assert.assertEquals;
-
-import javax.annotation.Resource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Property Service 기본 기능 확인 클래스
@@ -27,7 +27,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 		"classpath*:/spring/context-common.xml",
- 		"classpath*:/spring/context-extfile.xml" })
+ 		"classpath*:/spring/context-extfile.xml"
+})
 public class PropertyServiceExtFileTest extends AbstractJUnit4SpringContextTests {
 
     @Resource(name = "propertyService")
@@ -39,9 +40,7 @@ public class PropertyServiceExtFileTest extends AbstractJUnit4SpringContextTests
      */
     @Test
     public void testPropertiesService() throws Exception {
-
         assertEquals("안녕하세요.", propertyService.getString("greet.message"));
-
     }
 
 }

@@ -1,15 +1,14 @@
 package org.egovframe.rte.psl.dataaccess.mapper;
 
-import java.math.BigDecimal;
-
-import org.egovframe.rte.psl.dataaccess.vo.DeptVO;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.egovframe.rte.psl.dataaccess.vo.DeptVO;
 
-@Mapper("departmentMapper")
+import java.math.BigDecimal;
+
+@EgovMapper("departmentMapper")
 public interface DepartmentMapper {
 
 	@Select("select DEPT_NO as deptNo, DEPT_NAME as deptName, LOC as loc from DEPT where DEPT_NO = #{deptNo}")

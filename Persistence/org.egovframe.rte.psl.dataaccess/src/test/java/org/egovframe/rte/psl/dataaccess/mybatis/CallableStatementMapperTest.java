@@ -1,25 +1,8 @@
 package org.egovframe.rte.psl.dataaccess.mybatis;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.egovframe.rte.psl.dataaccess.TestBase;
 import org.egovframe.rte.psl.dataaccess.dao.EmpMapper;
 import org.egovframe.rte.psl.dataaccess.vo.EmpVO;
-
-import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +14,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  *  == 개정이력(Modification Information) ==
@@ -162,7 +151,7 @@ public class CallableStatementMapperTest extends TestBase {
 			// IN, OUT 또는 INOUT 파라메터 정의
 			Map<String, Object> map = new HashMap<String, Object>();
 			// 현재 시간에서 inCondition 에 해당하는 일자(days)를 뺀 시간을 되돌려 줄 것임.
-			map.put("inCondition", new Integer(1));
+			map.put("inCondition", Integer.valueOf(1));
 			// 결과는 해당 map 의 outResult 라는 변수로 담겨 올 것임.
 
 			// procedure call
@@ -180,7 +169,7 @@ public class CallableStatementMapperTest extends TestBase {
 			// IN, OUT 또는 INOUT 파라메터 정의
 			Map<String, Object> map = new HashMap<String, Object>();
 			// 현재 시간에서 inCondition 에 해당하는 일자(days)를 뺀 시간을 되돌려 줄 것임.
-			map.put("inCondition", new Integer(1));
+			map.put("inCondition", Integer.valueOf(1));
 			// 결과는 해당 map 의 outResult 라는 변수로 담겨 올 것임.
 
 			// procedure call

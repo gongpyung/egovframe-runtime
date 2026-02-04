@@ -15,8 +15,6 @@
  */
 package org.egovframe.rte.fdl.access.service.impl;
 
-import java.util.*;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -24,20 +22,24 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Map;
+
 /**
  * DB기반의 보호된 자원 관리를 구현한 DAO 클래스
  *
  * <p>Desc.: DB기반의 보호된 자원 관리를 구현한 DAO 클래스</p>
  *
- * @author Egovframework Center
+ * @author ESFC
  * @since 2019.10.01
  * @version 3.9
  * <pre>
  * 개정이력(Modification Information)
  *
- * 수정일		수정자				    수정내용
+ * 수정일		수정자				수정내용
  * ----------------------------------------------
- * 2019.10.01	Egovframework Center	최초 생성
+ * 2019.10.01	ESFC            최초 생성
  * </pre>
  */
 public class EgovAccessDao implements ApplicationContextAware {
@@ -75,13 +77,11 @@ public class EgovAccessDao implements ApplicationContextAware {
     }
 
     public List<Map<String, Object>> getAuthorityUser() {
-        LOGGER.debug("##### EgovAccessDao getAuthorityUser >>> {} ", getAuthorityUserQuery());
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(getAuthorityUserQuery());
         return list;
     }
 
     public List<Map<String, Object>> getRoleAndUrl() {
-        LOGGER.debug("##### EgovAccessDao getRoleAndUrl >>> {} ", getRoleAndUrlQuery());
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(getRoleAndUrlQuery());
         return list;
     }

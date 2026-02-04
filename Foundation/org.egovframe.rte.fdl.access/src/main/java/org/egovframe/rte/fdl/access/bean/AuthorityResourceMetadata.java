@@ -15,45 +15,42 @@
  */
 package org.egovframe.rte.fdl.access.bean;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.egovframe.rte.fdl.access.service.EgovAccessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.egovframe.rte.fdl.access.service.EgovAccessService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 권한 및 접근제한 정보를 매핑하는 클래스
  *
  * <p>Desc.: 권한 및 접근제한 정보를 매핑하는 클래스</p>
  *
- * @author Egovframework Center
+ * @author ESFC
  * @since 2019.10.01
  * @version 3.9
  * <pre>
  * 개정이력(Modification Information)
  *
- * 수정일		수정자				    수정내용
+ * 수정일		수정자				수정내용
  * ----------------------------------------------
- * 2019.10.01	Egovframework Center	최초 생성
- * 2021.02.01   Egovframework Center    권한재설정 수정
+ * 2019.10.01	ESFC            최초 생성
+ * 2021.02.01   ESFC            권한재설정 수정
+ * 2024.03.29   ESFC            권한재설정(reload() method) 수정
  * </pre>
  */
 public class AuthorityResourceMetadata {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorityResourceMetadata.class);
 
-    private EgovAccessService egovAccessService;
     private static List<Map<String, Object>> authorityList;
-    private List<Map<String, Object>> resourceMap;
+    private static List<Map<String, Object>> resourceMap;
+    private EgovAccessService egovAccessService;
 
     public AuthorityResourceMetadata(List<Map<String, Object>> authorityList, List<Map<String, Object>> resourceMap) {
         this.authorityList = authorityList;
         this.resourceMap = resourceMap;
-    }
-
-    public EgovAccessService getEgovAccessService() {
-        return egovAccessService;
     }
 
     public void setEgovAccessService(EgovAccessService egovAccessService) {
@@ -64,23 +61,20 @@ public class AuthorityResourceMetadata {
         return authorityList;
     }
 
-    public List<Map<String, Object>> getResourceMap() {
+    public static List<Map<String, Object>> getResourceMap() {
         return resourceMap;
     }
 
     public void reload() throws Exception {
-        List<Map<String, Object>> authList = egovAccessService.getAuthorityUser();
-        Iterator<Map<String, Object>> authInterator = authList.iterator();
         authorityList.clear();
-        while (authInterator.hasNext()) {
-            authorityList.add(authInterator.next());
-        }
-        List<Map<String, Object>> list = egovAccessService.getRoleAndUrl();
-        Iterator<Map<String, Object>> iterator = list.iterator();
         resourceMap.clear();
-        while (iterator.hasNext()) {
-            resourceMap.add(iterator.next());
-        }
+
+        List<Map<String, Object>> authList = egovAccessService.getAuthorityUser();
+        authorityList.addAll(authList);
+
+        List<Map<String, Object>> list = egovAccessService.getRoleAndUrl();
+        resourceMap.addAll(list);
+
         LOGGER.info("##### AuthorityResourceMetadata >>> Role Mappings reloaded at Runtime #####");
     }
 

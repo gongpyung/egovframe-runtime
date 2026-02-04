@@ -15,28 +15,28 @@
  */
 package org.egovframe.rte.fdl.access.bean;
 
+import org.egovframe.rte.fdl.access.config.EgovAccessConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
-import org.egovframe.rte.fdl.access.config.EgovAccessConfig;
 
 /**
  * 권한 정보 취득을 위한 query 지정을 처리하는 factory bean 클래스
  *
  * <p>Desc.: 권한 정보 취득을 위한 query 지정을 처리하는 factory bean 클래스</p>
  *
- * @author Egovframework Center
+ * @author ESFC
  * @since 2019.10.01
  * @version 3.9
  * <pre>
  * 개정이력(Modification Information)
  *
- * 수정일		수정자				    수정내용
+ * 수정일		수정자				수정내용
  * ----------------------------------------------
- * 2019.10.01	Egovframework Center	최초 생성
+ * 2019.10.01   ESFC            최초 생성
  * </pre>
  */
 public class AuthorityUserFactoryBean implements FactoryBean<String>, ApplicationContextAware {
